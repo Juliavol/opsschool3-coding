@@ -37,17 +37,13 @@ def parse_json(json_data):
 
     buckets_arr = json_data['buckets']
     ppl_ages_dict = json_data['ppl_ages']
-    range_cur_item = {
-                'People': []
-            }
+    range_cur_item = {'People': []}
     start = True
     next_item = 0
     ranges = []
     rest_of_ppl = []
 
     buckets_arr = sorted(buckets_arr)
-    pp(ppl_ages_dict)
-    print(buckets_arr)
     #create bucket_ranges dictionaries
     for i in buckets_arr:
         if start:
@@ -58,32 +54,26 @@ def parse_json(json_data):
             range_cur_item['End'] = i -1
             next_item = i
             ranges.append(range_cur_item)
-            range_cur_item = {
-                'People': []
-            }
+            range_cur_item = {'People': []}
         else:
             range_cur_item['End'] = i-1
             next_item = i
             ranges.append(range_cur_item)
-            range_cur_item = {
-                'People': []
-            }
-
-    print(ranges)
-
+            range_cur_item = {'People': []}
+    #divide people into previously created buckets
     for name, age in ppl_ages_dict.items():
         found = False
         for age_range in ranges:
             if age_range['Start'] <= age <= age_range['End']:
-                age_range['People'].append({name: age})
+                age_range['People'].append(name)
                 found = True
         if not found:
-            rest_of_ppl.append({name: age})
-
+            rest_of_ppl.append(name)
+    #export names in buckets to yaml
     with codecs.open("my_list.yaml", "w", "utf-8") as write_file:
         for age_range in ranges:
-            yaml.dump({"{0}-{1}".format(age_range['Start'], age_range['End']): age_range['People']}, write_file)
-        yaml.dump({'rest_of_people': rest_of_ppl}, write_file, encoding=('utf-8'))
+            yaml.dump({"{0}-{1}".format(age_range['Start'], age_range['End']): age_range['People']}, write_file, default_flow_style=False, allow_unicode=True)
+        yaml.dump({'rest_of_people': rest_of_ppl}, write_file, default_flow_style=False, allow_unicode=True)
 
 
 def main():
