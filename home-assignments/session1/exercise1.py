@@ -88,33 +88,12 @@ def parse_json(json_data):
                 found = True
         if not found:
             rest_of_ppl.append({name: age})
-   #         if v in range(buckets_arr[i], buckets_arr[i+1]):
-
-    # print("here \n")
-    # pp(ranges)
-    # print("rest \n")
-    # pp(rest_of_ppl)
 
     with codecs.open("my_list.yaml", "w", "utf-8") as write_file:
         for age_range in ranges:
             yaml.dump({"{0}-{1}".format(age_range['Start'], age_range['End']): age_range['People']}, write_file)
         yaml.dump({'rest_of_people': rest_of_ppl}, write_file)
 
-'''
-def divide_age_buckets():
-
-
-def export_buckets():
-    
-    from decimal import Decimal
-
-    d = {}
-    d["Name"] = "Luke"
-    d["Country"] = "Canada"
-
-    print json.dumps(d, ensure_ascii=False)
-    # result {"Country": "Canada", "Name": "Luke"}
-'''
 
 def main():
     """Gets a JSON file, parses it, manipulates data and saves to YAML
