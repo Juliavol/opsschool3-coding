@@ -1,4 +1,5 @@
-#1/user/bin/env python3
+#!/user/bin/env python3
+# -*- coding: UTF-8 -*-
 
 """Please write a program that does the following:
 Read an input parameter with a JSON file name (for instance my_list.json)
@@ -16,15 +17,18 @@ The JSON will be in the following format (see below)
 Usage:
 	python exercise1.py
 """
-
-import sys, os, json
+import codecs
+import json
+import os
+import yaml
 from pprint import pprint as pp
 
+
 # Read an input parameter with a JSON file name
-# C:\Users\julia.shub\PycharmProjects\OpsSchool\Session1-HW\opsschool3-coding\home-assignments\session1\my_list.json
+# ppl_ages_dict C:\Users\julia.shub\PycharmProjects\OpsSchool\Session1-HW\opsschool3-coding\home-assignments\session1\my_list.json
 def get_json():
     file_name = os.path.join(input('JSON full path: '))
-    with open(file_name) as f:
+    with open(file_name, encoding='UTF-8') as f:
         data = json.load(f)
     return data
 
@@ -42,12 +46,16 @@ def parse_json(json_data):
 
     buckets_arr = json_data['buckets']
     ppl_ages_dict = json_data['ppl_ages']
-    range_cur_item = {}
+    range_cur_item = {
+                'People': []
+            }
     start = True
     next_item = 0
     ranges = []
+    rest_of_ppl = []
 
     buckets_arr = sorted(buckets_arr)
+    pp(ppl_ages_dict)
     print(buckets_arr)
     #create bucket_ranges dictionaries
     for i in buckets_arr:
@@ -59,31 +67,38 @@ def parse_json(json_data):
             range_cur_item['End'] = i -1
             next_item = i
             ranges.append(range_cur_item)
-            range_cur_item = {}
+            range_cur_item = {
+                'People': []
+            }
         else:
             range_cur_item['End'] = i-1
             next_item = i
             ranges.append(range_cur_item)
-            range_cur_item = {}
+            range_cur_item = {
+                'People': []
+            }
 
     print(ranges)
 
+    for name, age in ppl_ages_dict.items():
+        found = False
+        for age_range in ranges:
+            if age_range['Start'] <= age <= age_range['End']:
+                age_range['People'].append({name: age})
+                found = True
+        if not found:
+            rest_of_ppl.append({name: age})
+   #         if v in range(buckets_arr[i], buckets_arr[i+1]):
 
+    # print("here \n")
+    # pp(ranges)
+    # print("rest \n")
+    # pp(rest_of_ppl)
 
-
-
-
-
-
-#    for k,v in ppl_ages_dict.items():
-#        if v in buck_range
-
-
-
-
-
-    with open("my_list.yaml", "w") as write_file:
-        json.dump(json_data, write_file)
+    with codecs.open("my_list.yaml", "w", "utf-8") as write_file:
+        for age_range in ranges:
+            yaml.dump({"{0}-{1}".format(age_range['Start'], age_range['End']): age_range['People']}, write_file)
+        yaml.dump({'rest_of_people': rest_of_ppl}, write_file)
 
 '''
 def divide_age_buckets():
