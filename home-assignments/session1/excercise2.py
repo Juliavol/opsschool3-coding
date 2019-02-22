@@ -56,14 +56,42 @@ def get_weather(api_key, lat, lon):
     with open('cur_weather.txt', 'w') as f:
         for item in weather:
             f.write("%s\n" % item)
-    return weather
+
+
+'''create a list with at least 10 cities,
+And print their current weather in the following format:
+“The weather in <city>, <country>(full country name) is XX degrees.'''
+def get_weather_by_city():
+    cities = ['Moscow', 'Jerusalem', 'London', 'Dublin', 'Paris', 'Madrid', 'New Delhi', 'Los Angeles', 'Cairo', 'Santiago', 'Beijing']
+
+    for city in cities:
+        url = "http://api.openweathermap.org/data/2.5/weather?q={}&appid={}&units=metric".format(city, api_key)
+        r = requests.get(url)
+        response_list = r.json()
+        country_code = response_list['sys']['country']
+        weather = response_list['weather'][0]
+        country = ''
+        with open('country_name_ISO_3166_1.json') as json_file:
+            json_data = json.load(json_file)
+            for item in json_data:
+                if item['Code'] == country_code:
+                    country = item['Name']
+                    break
+
+
+        # Get country weather data from response with city name
+        response_list = r.json()
+        temp = response_list['main']['temp']
+
+        print('The weather in {}, {} is {} degrees'.format(city, country, temp))
 
 
 def main():
     """Gets a JSON file, parses it, manipulates data and saves to YAML
     """
-    lat, lon = get_geo_by_ip()
-    get_weather(api_key, lat, lon)
+    #lat, lon = get_geo_by_ip()
+    #get_weather(api_key, lat, lon)
+    get_weather_by_city()
 
 
 if __name__ == '__main__':
