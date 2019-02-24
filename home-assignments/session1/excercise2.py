@@ -2,19 +2,18 @@
 # -*- coding: UTF-8 -*-
 
 
-import sys
-from urllib.request import urlopen
+
 import requests
+from requests import get
 import json
-import sys
-import configparser
 
 api_key = 'a5b74bcd1a10b3ee324a0bf25c1b247d'
 
 def get_geo_by_ip():
     '''check your location according to your IP.
     Then check the current weather at your location and writes the result to a file in a regular text format.'''
-    send_url = "http://api.ipstack.com/109.64.9.109?access_key=c755c7cae07cf8943a551ee0562b3825"
+    ip = get('https://api.ipify.org').text
+    send_url = "http://api.ipstack.com/{}?access_key=c755c7cae07cf8943a551ee0562b3825".format(ip)
     geo_req = requests.get(send_url)
     geo_json = json.loads(geo_req.text)
     lat = geo_json['latitude']
