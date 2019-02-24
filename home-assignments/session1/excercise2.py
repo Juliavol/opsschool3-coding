@@ -87,7 +87,9 @@ def get_weather_by_city():
 
 
 def main():
-    """Gets a JSON file, parses it, manipulates data and saves to YAML
+    """Gets a geolocation by IP
+    gets weather by Geodata
+    Gets weather by city for list of cities
     """
     lat, lon = get_geo_by_ip()
     get_weather(api_key, lat, lon)
