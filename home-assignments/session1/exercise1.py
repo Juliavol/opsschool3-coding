@@ -77,7 +77,7 @@ def parse_json(json_data):
 
 
 def main():
-    """Gets a JSON file, parses it, manipulates data and saves to YAML
+    """Gets a JSON file, parses it, manipulates data and saves to YAML .
     """
     parse_json(get_json())
 
