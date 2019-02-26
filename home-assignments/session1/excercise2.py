@@ -7,6 +7,7 @@ import json
 
 api_key = 'a5b74bcd1a10b3ee324a0bf25c1b247d'
 
+
 def get_geo_by_ip():
     '''check your location according to your IP.
     Then check the current weather at your location and writes the result to a file in a regular text format.'''
@@ -76,4 +77,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()  
+    main()
