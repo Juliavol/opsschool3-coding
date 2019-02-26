@@ -5,12 +5,12 @@ import requests
 from requests import get
 import json
 
-api_key = 'a5b74bcd1a10b3ee324a0bf25c1b247d'
+API_KEY = 'a5b74bcd1a10b3ee324a0bf25c1b247d'
 
 
 def get_geo_by_ip():
-    '''check your location according to your IP.
-    Then check the current weather at your location and writes the result to a file in a regular text format.'''
+    """check your location according to your IP.
+    Then check the current weather at your location and writes the result to a file in a regular text format."""
 
     ip = get('https://api.ipify.org').text
     send_url = "http://api.ipstack.com/{}?access_key=c755c7cae07cf8943a551ee0562b3825".format(ip)
@@ -23,8 +23,15 @@ def get_geo_by_ip():
 
 
 # sample api call - http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID={}
-def get_weather(api_key, lat, lon):
-    url = "http://api.openweathermap.org/data/2.5/forecast?appid={}&lat={}&lon={}".format(api_key, lat, lon)
+def get_weather_by_geo(API_KEY, lat, lon):
+    """ Get Geo location by longditude and latitude
+
+    :param api_key: api key provided to openweathernap
+    :param lat: latitude (geodata)
+    :param lon: Longitude (geodata)
+    :return:
+    """
+    url = "http://api.openweathermap.org/data/2.5/forecast?appid={}&lat={}&lon={}".format(API_KEY, lat, lon)
     r = requests.get(url)
 
     # Get weather data from response
@@ -33,21 +40,21 @@ def get_weather(api_key, lat, lon):
     print(weather)
 
     # export list to file
-    with open('cur_weather.txt', 'w') as f:
+    with open('cur_weather.txt', 'w') as file:
         for item in weather:
-            f.write("%s\n" % item)
+            file.write("%s\n" % item)
 
 
 def get_weather_by_city():
-    '''create a list with at least 10 cities,
+    """create a list with at least 10 cities,
     And print their current weather in the following format:
-    “The weather in <city>, <country>(full country name) is XX degrees.'''
+    “The weather in <city>, <country>(full country name) is XX degrees."""
     cities = ['Moscow', 'Jerusalem', 'London', 'Dublin', 'Paris', 'Madrid', 'New Delhi', 'Los Angeles', 'Cairo', 'Santiago', 'Beijing']
 
     for city in cities:
-        url = "http://api.openweathermap.org/data/2.5/weather?q={}&appid={}&units=metric".format(city, api_key)
-        r = requests.get(url)
-        response_list = r.json()
+        url = "http://api.openweathermap.org/data/2.5/weather?q={}&appid={}&units=metric".format(city, API_KEY)
+        request = requests.get(url)
+        response_list = request.json()
         country_code = response_list['sys']['country']
         weather = response_list['weather'][0]
         country = ''
@@ -60,7 +67,7 @@ def get_weather_by_city():
 
 
         # Get country weather data from response with city name
-        response_list = r.json()
+        response_list = request.json()
         temp = response_list['main']['temp']
 
         print('The weather in {}, {} is {} degrees'.format(city, country, temp))
@@ -72,7 +79,7 @@ def main():
     Gets weather by city for list of cities
     """
     lat, lon = get_geo_by_ip()
-    get_weather(api_key, lat, lon)
+    get_weather_by_geo(API_KEY, lat, lon)
     get_weather_by_city()
 
 
