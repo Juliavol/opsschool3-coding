@@ -19,7 +19,7 @@ def parse_json(json_data):
     '''the program will go over the list of people and divide them to buckets based on their ages + bonus bucket for people that are not in the range defined by the array in the json file
 
     Args:
-         json_data: json_data is a dictionary imported from a file
+         json_data: json_data is a dictionary imported from a fil
     '''
 
     buckets_arr = json_data['buckets']
