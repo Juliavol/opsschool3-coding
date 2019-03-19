@@ -6,8 +6,8 @@ node ('jenkins_node_01'){
    }
   stage('Printing runnig_tests'){
      sh 'echo "runnig_tests"'
-     sh 'wget https://raw.githubusercontent.com/Juliavol/opsschool3-coding/excersise2/home-assignments//session1/excercise2.py'
-     sh 'session2.py'
+     sh 'wget https://raw.githubusercontent.com/Juliavol/opsschool3-coding/excersise2/home-assignments/session1/excercise2.py'
+     sh 'python excercise2.py'
   }
    stage('unit test'){
        sh 'echo "unit test has started"'
